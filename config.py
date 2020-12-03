@@ -12,6 +12,15 @@ MQTT_BROKER_IP_ADDRESS = '192.168.1.100'
 MQTT_USER_NAME = 'iot'
 MQTT_PASSWORD = '' #Das Passwort wird Ihnen zum Praktikum mitgeteilt.
 
+# MetaMask: Adresse
+ADDRESS = ' ... '
+
+# MetaMask: privater Schlüssel
+PRIVATE_KEY = '0x ... ' # Hinweis: Bei der Definition muss der '0x'-Präfix vor die Adresse gesetzt werden.
+
+#Smart-Contract-Adresse
+CONTRACT_ADDRESS = ' ... '
+
 # Infura-RPC-URL
 RPC_URL = 'https://ropsten.infura.io/v3/65fc4a530add4638957756e5ee4991ed'
 

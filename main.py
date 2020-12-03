@@ -1,3 +1,4 @@
+# basic imports
 import streams
 
 # Ethereum modules
@@ -15,11 +16,15 @@ import ssl
 # Configuration file
 import config
 
+# mqtt library
+from mqtt import mqtt
+
 # The SSL context is needed to validate https certificates
 SSL_CTX = ssl.create_ssl_context(
     cacert=config.CA_CERT,
     options=ssl.CERT_REQUIRED|ssl.SERVER_AUTH
 )
+
 
 try:
     streams.serial()
@@ -51,13 +56,10 @@ try:
             args_type=method["args"]
         )
 except Exception as e:
-print(e)	        
+print(e)
 
-#--------------------------------------------------------------------------
 
-#mqtt importieren
-#...
-
+# Funktion zum prüfen, ob reset Nachricht gesendet wurde
 def is_reset(data):
     if ('message' in data):
         return (data['message'].payload == "Master: Actor-1 reset.")
@@ -65,11 +67,15 @@ def is_reset(data):
     # on PUBLISH packets for messages with qos equal to 2
     return False
 
+# Funktion zum ausführen eines resets und senden der Quittung
 def reset(data):
-	#wenn resetet
-	...
-	my_client.publish(iot/Actor-1/status, "Actor-1 is reset.")
+	# hier reset ausführen
+	# ...
+	# wenn geresetet:
+		my_client.publish(iot/Actor-1/status, "Actor-1 is reset.")
 
+
+# mqtt setup 
 my_client = mqtt.Client("actor-1",True)
 for retry in range(10):
     try:
@@ -77,21 +83,20 @@ for retry in range(10):
         break
     except Exception as e:
         print("connecting...")
+# mqtt subscribtion + für reset
 my_client.subscribe([["iot/master"]])
 my_client.on(mqtt.PUBLISH, reset, is_reset)
 
-#wenn aktor ein
-#...
-	my_client.publish(iot/Actor-1/status, "Actor-1 is on.")
+# Bereitschaft signalisieren
+my_client.publish(iot/Actor-1/status, "Actor-1 is ready.")
 
-#wenn aktor aus
-#...
+# Aufruf der readLed Funktion des Smart Contracts
+ledStatus = led_contract.call("readLed")
+
+#prüfen ob led eingeschaltet werden muss
+if (ledStatus == 1):
+	my_client.publish(iot/Actor-1/status, "Actor-1 is on.")
+else:
 	my_client.publish(iot/Actor-1/status, "Actor-1 is off.")
 
-#wenn ready
-#...
-	my_client.publish(iot/Actor-1/status, "Actor-1 is ready.")
-
 my_client.loop()
-
-#
