@@ -1,4 +1,5 @@
 # basic imports
+import mcu
 import streams
 
 # Ethereum modules
@@ -24,7 +25,6 @@ SSL_CTX = ssl.create_ssl_context(
     cacert=config.CA_CERT,
     options=ssl.CERT_REQUIRED|ssl.SERVER_AUTH
 )
-
 
 try:
     streams.serial()
@@ -63,40 +63,41 @@ print(e)
 def is_reset(data):
     if ('message' in data):
         return (data['message'].payload == "Master: Actor-1 reset.")
-    # N.B. not checking if 'message' is in data could lead to Exception
-    # on PUBLISH packets for messages with qos equal to 2
     return False
 
 # Funktion zum ausführen eines resets und senden der Quittung
 def reset(data):
-	# hier reset ausführen
-	# ...
-	# wenn geresetet:
-		my_client.publish(iot/Actor-1/status, "Actor-1 is reset.")
+	mcu.reset()
+	my_client.publish(iot/Actor-1/status, "Actor-1 is reset.")
 
+try:
+	# mqtt setup 
+	my_client = mqtt.Client("actor-1",True)
+	for retry in range(10):
+	    try:
+	        my_client.connect(config.MQTT_BROKER_IP_ADDRESS, 60)
+	        break
+	    except Exception as e:
+	        print("connecting...")
+	# mqtt subscribtion + für reset
+	my_client.subscribe([["iot/master"]])
+	my_client.on(mqtt.PUBLISH, reset, is_reset)
 
-# mqtt setup 
-my_client = mqtt.Client("actor-1",True)
-for retry in range(10):
-    try:
-        my_client.connect("test.mosquitto.org", 60)
-        break
-    except Exception as e:
-        print("connecting...")
-# mqtt subscribtion + für reset
-my_client.subscribe([["iot/master"]])
-my_client.on(mqtt.PUBLISH, reset, is_reset)
+	# Bereitschaft signalisieren
+	my_client.publish(iot/Actor-1/status, "Actor-1 is ready.")
 
-# Bereitschaft signalisieren
-my_client.publish(iot/Actor-1/status, "Actor-1 is ready.")
+	my_client.loop()
 
-# Aufruf der readLed Funktion des Smart Contracts
-ledStatus = led_contract.call("readLed")
-
-#prüfen ob led eingeschaltet werden muss
-if (ledStatus == 1):
-	my_client.publish(iot/Actor-1/status, "Actor-1 is on.")
-else:
-	my_client.publish(iot/Actor-1/status, "Actor-1 is off.")
-
-my_client.loop()
+	while True:
+		sleep(4000)
+		# Aufruf der readLed Funktion des Smart Contracts
+		ledStatus = led_contract.call("readLed")
+		#prüfen ob led eingeschaltet werden muss
+		if (ledStatus == 1):
+			digitalWrite(D13, 1) #?
+			my_client.publish(iot/Actor-1/status, "Actor-1 is on.")
+		else:
+			digitalWrite(D13, 0) #?
+			my_client.publish(iot/Actor-1/status, "Actor-1 is off.")
+except Exception as e:
+    print(e)

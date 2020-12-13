@@ -5,18 +5,19 @@ DEVICE_NAME = 'Actor-1'
 PIN_LED = 13
 
 #WLAN-Zugang
-WIFI_SSID = 'KFT_IoT'WIFI_PASSWORD = '' #Das Passwort wird Ihnen zum Praktikum mitgeteilt.
+WIFI_SSID = 'KFT_IoT'
+WIFI_PASSWORD = ''
 
 #MQTT-Broker
-MQTT_BROKER_IP_ADDRESS = '192.168.1.100'
-MQTT_USER_NAME = 'iot'
-MQTT_PASSWORD = '' #Das Passwort wird Ihnen zum Praktikum mitgeteilt.
+MQTT_BROKER_IP_ADDRESS = 'mqtt.fluux.io'
+MQTT_USER_NAME = ''
+MQTT_PASSWORD = ''
 
 # MetaMask: Adresse
-ADDRESS = ' ... '
+ADDRESS = '0xc0F7F2A551070c04F5e1c664Df25360eB292A5f9'
 
 # MetaMask: privater Schlüssel
-PRIVATE_KEY = '0x ... ' # Hinweis: Bei der Definition muss der '0x'-Präfix vor die Adresse gesetzt werden.
+PRIVATE_KEY = '0x59017c6a42a3d60515d7e6b6b4cf180775bec07e8f828fc757d8677f7d29ae62' # Hinweis: Bei der Definition muss der '0x'-Präfix vor die Adresse gesetzt werden.
 
 #Smart-Contract-Adresse
 CONTRACT_ADDRESS = ' ... '
