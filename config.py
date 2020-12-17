@@ -5,8 +5,8 @@ DEVICE_NAME = 'Actor-1'
 PIN_LED = 13
 
 #WLAN-Zugang
-WIFI_SSID = 'KFT_IoT'
-WIFI_PASSWORD = ''
+WIFI_SSID = 'Brotnetz2_EXT'
+WIFI_PASSWORD = 'xxxxxxxxxxxxxxx'
 
 #MQTT-Broker
 MQTT_BROKER_IP_ADDRESS = 'mqtt.fluux.io'
@@ -20,7 +20,18 @@ ADDRESS = '0xc0F7F2A551070c04F5e1c664Df25360eB292A5f9'
 PRIVATE_KEY = '0x59017c6a42a3d60515d7e6b6b4cf180775bec07e8f828fc757d8677f7d29ae62' # Hinweis: Bei der Definition muss der '0x'-Präfix vor die Adresse gesetzt werden.
 
 #Smart-Contract-Adresse
-CONTRACT_ADDRESS = ' ... '
+CONTRACT_ADDRESS = '0xA51e08c92E440028D85394fC4Ed6F72aE86a87B7'
+
+# Methods interface
+# Name, arguments types, and gas limit must be specified.
+CONTRACT_METHODS = {
+    "readLed": {
+        "args": (),
+        "gas_limit": "0x6691b7",
+    },
+}
+
+GAS_PRICE = "0x174876e800"
 
 # Infura-RPC-URL
 RPC_URL = 'https://ropsten.infura.io/v3/65fc4a530add4638957756e5ee4991ed'
